@@ -4,6 +4,8 @@ import br.com.linktreeclone.dto.LinkRequestDTO;
 import br.com.linktreeclone.dto.LinkResponseDTO;
 import br.com.linktreeclone.entity.Link;
 import br.com.linktreeclone.entity.User;
+import br.com.linktreeclone.exception.ResourceNotFoundException;
+import br.com.linktreeclone.exception.UnauthorizedException;
 import br.com.linktreeclone.repository.LinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,12 +47,12 @@ public class LinkService
     {
         User currentUser = getCurrentAuthenticatedUser();
         Link linkToUpdate = linkRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Link not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Link not found with id: " + id));
 
 
         if (!linkToUpdate.getUser().getId().equals(currentUser.getId()))
         {
-            throw new RuntimeException("Unauthorized to update this link");
+            throw new UnauthorizedException("User not authorized to update this link");
         }
 
         linkToUpdate.setTitle(dto.title());
@@ -63,11 +65,12 @@ public class LinkService
     {
         User currentUser = getCurrentAuthenticatedUser();
         Link linkToDelete = linkRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Link not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Link not found with id: " + id));
 
-        // Validação de segurança
-        if (!linkToDelete.getUser().getId().equals(currentUser.getId())) {
-            throw new RuntimeException("Unauthorized to delete this link");
+
+        if (!linkToDelete.getUser().getId().equals(currentUser.getId()))
+        {
+            throw new UnauthorizedException("User not authorized to delete this link");
         }
 
         linkRepository.delete(linkToDelete);
