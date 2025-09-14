@@ -3,6 +3,7 @@ package br.com.linktreeclone.controller;
 import br.com.linktreeclone.dto.LoginRequestDTO;
 import br.com.linktreeclone.dto.LoginResponseDTO;
 import br.com.linktreeclone.entity.User;
+import br.com.linktreeclone.exception.UnauthorizedException;
 import br.com.linktreeclone.repository.UserRepository;
 import br.com.linktreeclone.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,6 @@ public class AuthenticationController
             return ResponseEntity.ok(new LoginResponseDTO(token));
         }
 
-        throw new RuntimeException("Invalid password.");
+        throw new UnauthorizedException("Invalid password.");
     }
 }
