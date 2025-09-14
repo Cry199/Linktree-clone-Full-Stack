@@ -1,4 +1,3 @@
 package br.com.linktreeclone.dto;
 
-public record LinkRequestDTO() {
-}
+public record LinkRequestDTO(String title, String url) { }
