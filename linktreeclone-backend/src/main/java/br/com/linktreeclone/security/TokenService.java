@@ -41,4 +41,20 @@ public class TokenService
                 .signWith(key)
                 .compact();
     }
+
+    public String validateToken(String token)
+    {
+        try
+        {
+            return Jwts.parser()
+                    .setSigningKey(jwtSecret)
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("Expired or invalid JWT token");
+        }
+    }
 }
