@@ -19,7 +19,7 @@ public class SecurityConfig
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(toH2Console()).permitAll()
-                        .requestMatchers("/users/register").permitAll()
+                        .requestMatchers("/users/register", "/auth/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf
