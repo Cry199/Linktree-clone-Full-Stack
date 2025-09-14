@@ -1,4 +1,6 @@
 package br.com.linktreeclone.dto;
 
-public record LoginResponseDTO() {
+public record LoginResponseDTO(String token)
+{
+
 }
