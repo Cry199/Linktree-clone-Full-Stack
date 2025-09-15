@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Service
 public class TokenService
 {
     @Value("${jwt.secret}")
-    private String jwtSecret;
+    private String jwtSecretString;
 
     @Value("${jwt.expiration}")
     private Long jwtExpiration;
@@ -25,8 +25,7 @@ public class TokenService
 
     @PostConstruct
     public void init() {
-        byte[] keyBytes = Base64.getDecoder().decode(this.jwtSecret);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.key = Keys.hmacShaKeyFor(jwtSecretString.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateToken(User user)
@@ -38,7 +37,7 @@ public class TokenService
                 .setSubject(user.getId().toString())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(key)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -46,15 +45,15 @@ public class TokenService
     {
         try
         {
-            return Jwts.parser()
-                    .setSigningKey(jwtSecret)
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject();
         }
-        catch (Exception e)
-        {
-            throw new RuntimeException("Expired or invalid JWT token");
+        catch (Exception e) {
+            throw new RuntimeException("Token JWT expirado ou inválido");
         }
     }
 }
