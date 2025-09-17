@@ -1,11 +1,11 @@
+# .github/workflows/test-backend.yml
+
 name: Test Backend on Push
 
 on:
   push:
     branches:
-      - 'feature/**'
-      - 'bugfix/**'
-      - '*' 
+      - '*'
       - '!main'
     paths:
       - 'linktreeclone-backend/**'
@@ -31,3 +31,5 @@ jobs:
 
       - name: Run Maven Tests
         run: mvn clean verify
+        env:
+          SPRING_PROFILES_ACTIVE: test
