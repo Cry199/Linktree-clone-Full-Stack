@@ -1,21 +1,21 @@
 import apiClient from '../../../api/axiosConfig';
 
+// POST /links
 export const createLink = (linkData) => {
-  // 'linkData': { title, url }
   return apiClient.post('/links', linkData);
 };
 
-export const deleteLink = (id) => {
-  return apiClient.delete(`/links/${id}`);
+// GET /links
+export const getUserLinks = () => {
+  return apiClient.get('/links');
 };
 
-/*  
-    fazer
- 
-    backend: GET /links
+// PUT /links/{idDoLink}
+export const updateLink = (linkId, linkData) => {
+  return apiClient.put(`/links/${linkId}`, linkData);
+};
 
-    backend: PUT /links/{id}
-
-    backend: GET /{username}/links
-
-*/
+// DELETE /links/{idDoLink}
+export const deleteLink = (linkId) => {
+  return apiClient.delete(`/links/${linkId}`);
+};
