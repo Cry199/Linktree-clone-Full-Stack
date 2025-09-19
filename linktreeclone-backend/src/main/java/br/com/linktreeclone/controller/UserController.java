@@ -1,6 +1,7 @@
 package br.com.linktreeclone.controller;
 
 import br.com.linktreeclone.dto.LinkResponseDTO;
+import br.com.linktreeclone.dto.UpdateProfileRequestDTO;
 import br.com.linktreeclone.dto.UserProfileResponseDTO;
 import br.com.linktreeclone.entity.User;
 
@@ -42,6 +43,13 @@ public class UserController
         UserProfileResponseDTO profile = new UserProfileResponseDTO(currentUser, userLinks);
 
         return ResponseEntity.ok(profile);
+    }
+
+    @PutMapping("/me/profile")
+    public ResponseEntity<UserProfileResponseDTO> updateProfile(@RequestBody UpdateProfileRequestDTO dto)
+    {
+        UserProfileResponseDTO updatedProfile = userService.updateUserProfile(dto);
+        return ResponseEntity.ok(updatedProfile);
     }
 
 }
