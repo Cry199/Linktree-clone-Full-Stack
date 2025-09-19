@@ -1,54 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
-// Importa as funções da API de links que acabamos de definir
-import { getUserLinks, createLink, deleteLink } from '../api/linksApi';
+import { getUserLinks, createLink, deleteLink, updateLink } from '../api/linksApi';
 
 const AdminDashboard = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  // --- Estados do Componente ---
   const [links, setLinks] = useState([]);
   const [newLinkTitle, setNewLinkTitle] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // --- Busca de Dados ---
+  const [editingLink, setEditingLink] = useState(null);
+
   useEffect(() => {
     const fetchLinks = async () => {
       try {
-        const response = await getUserLinks(); 
+        const response = await getUserLinks();
         setLinks(response.data);
       } catch (err) {
         setError('Não foi possível carregar os links.');
-        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchLinks();
   }, []);
 
-  // --- Funções de Manipulação (Handlers) ---
   const handleCreateLink = async (e) => {
     e.preventDefault();
-    if (!newLinkTitle || !newLinkUrl) {
-      alert('Por favor, preencha o título e a URL.');
-      return;
-    }
-
+    if (!newLinkTitle || !newLinkUrl) return;
     try {
       const newLinkData = { title: newLinkTitle, url: newLinkUrl };
-      const response = await createLink(newLinkData); 
+      const response = await createLink(newLinkData);
       setLinks([...links, response.data]);
       setNewLinkTitle('');
       setNewLinkUrl('');
     } catch (err) {
       setError('Erro ao criar o link.');
-      console.error(err);
     }
   };
 
@@ -59,8 +50,24 @@ const AdminDashboard = () => {
         setLinks(links.filter((link) => link.id !== linkId));
       } catch (err) {
         setError('Erro ao apagar o link.');
-        console.error(err);
       }
+    }
+  };
+
+  const handleEditClick = (link) => {
+    setEditingLink({ ...link });
+  };
+
+  const handleUpdateLink = async (e) => {
+    e.preventDefault();
+    try {
+      await updateLink(editingLink.id, { title: editingLink.title, url: editingLink.url });
+      
+      setLinks(links.map(link => link.id === editingLink.id ? editingLink : link));
+
+      setEditingLink(null);
+    } catch (err) {
+      setError('Erro ao atualizar o link.');
     }
   };
 
@@ -69,50 +76,58 @@ const AdminDashboard = () => {
     navigate('/login');
   };
 
-  // --- Renderização ---
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
+  if (loading) return <div>Carregando...</div>;
 
   return (
-    <div>
+    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Meu Painel</h1>
         <button onClick={handleLogout}>Sair</button>
       </header>
-      
       <hr />
-
       <section>
         <h2>Criar Novo Link</h2>
         <form onSubmit={handleCreateLink}>
-          <input
-            type="text"
-            placeholder="Título (ex: Meu Portfólio)"
-            value={newLinkTitle}
-            onChange={(e) => setNewLinkTitle(e.target.value)}
-          />
-          <input
-            type="url"
-            placeholder="URL (ex: https://...)"
-            value={newLinkUrl}
-            onChange={(e) => setNewLinkUrl(e.target.value)}
-          />
+          <input type="text" placeholder="Título" value={newLinkTitle} onChange={(e) => setNewLinkTitle(e.target.value)} />
+          <input type="url" placeholder="URL" value={newLinkUrl} onChange={(e) => setNewLinkUrl(e.target.value)} />
           <button type="submit">Adicionar Link</button>
         </form>
       </section>
-
       <hr />
-
       <section>
         <h2>Meus Links</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         {links.length > 0 ? (
           <ul>
             {links.map((link) => (
-              <li key={link.id} style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0' }}>
-                <span>{link.title}: {link.url}</span>
-                <button onClick={() => handleDeleteLink(link.id)}>Apagar</button>
+              <li key={link.id} style={{ marginBottom: '15px' }}>
+                {/* --- LÓGICA DE RENDERIZAÇÃO CONDICIONAL --- */}
+                {editingLink && editingLink.id === link.id ? (
+                  // Se o link atual for o que está sendo editado, mostra o formulário
+                  <form onSubmit={handleUpdateLink}>
+                    <input
+                      type="text"
+                      value={editingLink.title}
+                      onChange={(e) => setEditingLink({ ...editingLink, title: e.target.value })}
+                    />
+                    <input
+                      type="url"
+                      value={editingLink.url}
+                      onChange={(e) => setEditingLink({ ...editingLink, url: e.target.value })}
+                    />
+                    <button type="submit">Salvar</button>
+                    <button type="button" onClick={() => setEditingLink(null)}>Cancelar</button>
+                  </form>
+                ) : (
+                  // Caso contrário, mostra o link normalmente com os botões
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span>{link.title}: {link.url}</span>
+                    <div>
+                      <button onClick={() => handleEditClick(link)}>Editar</button>
+                      <button onClick={() => handleDeleteLink(link.id)}>Apagar</button>
+                    </div>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
