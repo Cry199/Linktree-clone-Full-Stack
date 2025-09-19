@@ -2,11 +2,13 @@ package br.com.linktreeclone.service;
 
 import br.com.linktreeclone.dto.LinkRequestDTO;
 import br.com.linktreeclone.dto.LinkResponseDTO;
+import br.com.linktreeclone.dto.PublicProfileDTO;
 import br.com.linktreeclone.entity.Link;
 import br.com.linktreeclone.entity.User;
 import br.com.linktreeclone.exception.ResourceNotFoundException;
 import br.com.linktreeclone.exception.UnauthorizedException;
 import br.com.linktreeclone.repository.LinkRepository;
+import br.com.linktreeclone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class LinkService
 {
     @Autowired
     private LinkRepository linkRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public LinkResponseDTO createLink(LinkRequestDTO dto)
     {
@@ -59,6 +64,20 @@ public class LinkService
         linkToUpdate.setUrl(dto.url());
         Link updatedLink = linkRepository.save(linkToUpdate);
         return new LinkResponseDTO(updatedLink);
+    }
+
+    public PublicProfileDTO getPublicProfileByUsername(String username)
+    {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
+
+        List<Link> links = linkRepository.findAllByUser(user);
+
+        List<LinkResponseDTO> linkDTOs = links.stream()
+                .map(LinkResponseDTO::new)
+                .collect(Collectors.toList());
+
+        return new PublicProfileDTO(user, linkDTOs);
     }
 
     public void deleteLink(UUID id)
