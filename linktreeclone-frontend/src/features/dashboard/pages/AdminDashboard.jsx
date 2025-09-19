@@ -2,31 +2,49 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { getUserLinks, createLink, deleteLink, updateLink } from '../api/linksApi';
+import { getMe, updateMyProfile } from '../../auth/api/authApi';
 
 const AdminDashboard = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
+  // Estados para gerenciamento de Links
   const [links, setLinks] = useState([]);
   const [newLinkTitle, setNewLinkTitle] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
+  const [editingLink, setEditingLink] = useState(null);
+
+  // Estados para gerenciamento de Perfil
+  const [profileTitle, setProfileTitle] = useState('');
+  const [bio, setBio] = useState('');
+  const [profileMessage, setProfileMessage] = useState('');
+
+  // Estados de UI
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const [editingLink, setEditingLink] = useState(null);
-
   useEffect(() => {
-    const fetchLinks = async () => {
+    const fetchInitialData = async () => {
       try {
-        const response = await getUserLinks();
-        setLinks(response.data);
+        // Busca os links e os dados do perfil em paralelo
+        const [linksResponse, meResponse] = await Promise.all([
+          getUserLinks(),
+          getMe()
+        ]);
+
+        setLinks(linksResponse.data);
+        setProfileTitle(meResponse.data.profileTitle || '');
+        setBio(meResponse.data.bio || '');
+
       } catch (err) {
-        setError('Não foi possível carregar os links.');
+        setError('Não foi possível carregar os dados.');
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    fetchLinks();
+
+    fetchInitialData();
   }, []);
 
   const handleCreateLink = async (e) => {
@@ -40,6 +58,18 @@ const AdminDashboard = () => {
       setNewLinkUrl('');
     } catch (err) {
       setError('Erro ao criar o link.');
+    }
+  };
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setProfileMessage('');
+    try {
+      const profileData = { profileTitle, bio };
+      await updateMyProfile(profileData);
+      setProfileMessage('Perfil atualizado com sucesso!');
+    } catch (err) {
+      setProfileMessage('Erro ao atualizar o perfil.');
+      console.error(err);
     }
   };
 
@@ -62,7 +92,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       await updateLink(editingLink.id, { title: editingLink.title, url: editingLink.url });
-      
+
       setLinks(links.map(link => link.id === editingLink.id ? editingLink : link));
 
       setEditingLink(null);
@@ -85,6 +115,38 @@ const AdminDashboard = () => {
         <button onClick={handleLogout}>Sair</button>
       </header>
       <hr />
+
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      {/* --- EDIÇÃO DE PERFIL --- */}
+      <section>
+        <h2>Meu Perfil</h2>
+        <form onSubmit={handleProfileUpdate}>
+          <div>
+            <label>Título do Perfil:</label>
+            <input
+              type="text"
+              placeholder="Ex: Bem-vindo à minha página!"
+              value={profileTitle}
+              onChange={(e) => setProfileTitle(e.target.value)}
+              style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+            />
+          </div>
+          <div style={{ marginTop: '10px' }}>
+            <label>Bio:</label>
+            <textarea
+              placeholder="Fale um pouco sobre você..."
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              rows="3"
+              style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+            />
+          </div>
+          <button type="submit" style={{ marginTop: '10px' }}>Salvar Perfil</button>
+        </form>
+        {profileMessage && <p style={{ color: profileMessage.includes('Erro') ? 'red' : 'green' }}>{profileMessage}</p>}
+      </section>
+
       <section>
         <h2>Criar Novo Link</h2>
         <form onSubmit={handleCreateLink}>
