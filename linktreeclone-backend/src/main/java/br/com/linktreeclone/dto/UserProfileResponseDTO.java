@@ -9,10 +9,22 @@ public record UserProfileResponseDTO(
         UUID id,
         String username,
         String email,
+        String profileTitle,
+        String bio,
+        String profileImageUrl,
         List<LinkResponseDTO> links
 )
 {
-    public UserProfileResponseDTO(User user, List<LinkResponseDTO> links) {
-        this(user.getId(), user.getUsername(), user.getEmail(), links);
+    public UserProfileResponseDTO(User user, List<LinkResponseDTO> links)
+    {
+        this(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getProfileTitle(),
+                user.getBio(),
+                user.getProfileImageUrl(),
+                links
+        );
     }
 }
