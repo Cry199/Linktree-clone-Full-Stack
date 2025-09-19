@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../context/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext'
 
 const LoginPage = () => {
   const [email, setEmail] = useState('Bento@Bento.com'); 
@@ -23,7 +23,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: '400px', margin: '50px auto' }}>
       <h2>Página de Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -47,6 +47,10 @@ const LoginPage = () => {
         <button type="submit">Entrar</button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      <p style={{ textAlign: 'center', marginTop: '20px' }}>
+        Não tem uma conta? <Link to="/signup">Cadastre-se</Link>
+      </p>
     </div>
   );
 };
