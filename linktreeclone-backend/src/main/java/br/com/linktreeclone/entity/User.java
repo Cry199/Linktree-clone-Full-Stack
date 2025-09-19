@@ -35,6 +35,13 @@ public class User implements UserDetails
     @Column(nullable = false)
     private String password;
 
+    private String profileTitle;
+
+    @Column(length = 500)
+    private String bio;
+
+    private String profileImageUrl;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
