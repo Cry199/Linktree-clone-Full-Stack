@@ -3,7 +3,7 @@
   max-width: 800px;
   margin: 20px;
   padding: 20px;
-  background-color: #fff;
+  background-color: var(--surface-color);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -12,7 +12,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #dbdbdb;
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 16px;
   margin-bottom: 24px;
 }
@@ -36,7 +36,9 @@
 .dashboard-form textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid #dbdbdb;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--primary-text-color);
   border-radius: 6px;
   font-size: 1rem;
   box-sizing: border-box;
@@ -45,8 +47,8 @@
 .dashboard-form button {
   padding: 12px 20px;
   border: none;
-  background-color: #3897f0;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--button-text-color);
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
@@ -58,30 +60,38 @@
   padding: 0;
 }
 
-.link-item, .edit-form {
+.link-item,
+.edit-form {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px;
-  border: 1px solid #dbdbdb;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   margin-bottom: 10px;
 }
 
 .link-item-actions button {
   margin-left: 8px;
-  background: none;
-  border: 1px solid #dbdbdb;
+  background-color: var(--surface-color);
+  color: var(--primary-text-color);
+  border: 1px solid var(--border-color);
   padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.link-item-actions button:hover {
+  background-color: var(--background-color);
 }
 
 .dashboard-header button {
   padding: 8px 16px;
-  border: 1px solid #dbdbdb;
-  background-color: #fafafa;
-  color: #262626;
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-color);
+  color: var(--primary-text-color);
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
@@ -89,6 +99,6 @@
 }
 
 .dashboard-header button:hover {
-  background-color: #f0f0f0;
-  border-color: #c7c7c7;
+  background-color: var(--background-color);
+  border-color: var(--secondary-text-color);
 }
