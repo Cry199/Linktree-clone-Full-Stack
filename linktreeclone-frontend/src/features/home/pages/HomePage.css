@@ -78,3 +78,10 @@
     color: var(--primary-text-color);
     border: 1px solid var(--border-color);
 }
+
+.api-status-indicator {
+  margin-top: 24px;
+  font-weight: 500;
+  height: 20px;
+  transition: color 0.3s ease;
+}
