@@ -4,9 +4,12 @@ import { useAuth } from '../../../context/AuthContext';
 import './AuthForm.css';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState(''); 
-  const [password, setPassword] = useState('');  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -14,12 +17,20 @@ const LoginPage = () => {
     e.preventDefault();
     setError('');
 
-    const success = await login(email, password);
+    setIsLoading(true);
 
-    if (success) {
-      navigate('/admin/dashboard');
-    } else {
-      setError('Falha no login. Verifique seu e-mail e senha.');
+    try {
+      const success = await login(email, password);
+
+      if (success) {
+        navigate('/admin/dashboard');
+      } else {
+        setError('Falha no login. Verifique seu e-mail e senha.');
+      }
+    } catch (err) {
+      setError('Ocorreu um erro de rede. Tente novamente.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -35,11 +46,13 @@ const LoginPage = () => {
           <label>Senha:</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-        <button type="submit" className="auth-button">Entrar</button>
+        <button type="submit" className="auth-button" disabled={isLoading}>
+          {isLoading ? 'Entrando...' : 'Entrar'}
+        </button>
       </form>
 
       {error && <p className="error-message">{error}</p>}
-      
+
       <p className="auth-switch-link">
         Não tem uma conta? <Link to="/signup">Cadastre-se</Link>
       </p>
