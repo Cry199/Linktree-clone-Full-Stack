@@ -3,10 +3,11 @@ name: Test Frontend on Push
 on:
   push:
     branches:
-      - '*'      # Roda em qualquer branch
-      - '!main'  # Exceto na main
+      - '*'
+      - '!main'
     paths:
       - 'linktreeclone-frontend/**'
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -23,11 +24,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'   
-          cache-dependency-path: linktreeclone-frontend/package-lock.json    
+          cache: 'npm'
+          cache-dependency-path: linktreeclone-frontend/package-lock.json
 
       - name: Install Dependencies
         run: npm install
 
       - name: Run Tests
-        run: npm test
+        run: npm test -- --threads=false
