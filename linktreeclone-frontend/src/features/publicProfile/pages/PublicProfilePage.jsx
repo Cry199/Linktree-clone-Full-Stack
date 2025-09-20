@@ -1,71 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPublicProfile } from '../api/publicProfileApi';
+import './PublicProfilePage.css';
 
 const PublicProfilePage = () => {
-  const { username } = useParams();
+    const { username } = useParams();
 
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+    const [profile, setProfile] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        setLoading(true);
-        const response = await getPublicProfile(username);
-        setProfile(response.data);
-      } catch (err) {
-        setError(`Perfil "${username}" não encontrado.`);
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                setLoading(true);
+                const response = await getPublicProfile(username);
+                setProfile(response.data);
+            } catch (err) {
+                setError(`Perfil "${username}" não encontrado.`);
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    fetchProfile();
-  }, [username]);
+        fetchProfile();
+    }, [username]);
 
-  if (loading) {
-    return <div>Carregando perfil...</div>;
-  }
+    if (loading) {
+        return <div>Carregando perfil...</div>;
+    }
 
-  if (error) {
-    return <div style={{ color: 'red' }}>{error}</div>;
-  }
+    if (error) {
+        return <div style={{ color: 'red' }}>{error}</div>;
+    }
 
-  return (
-    <div style={{ maxWidth: '680px', margin: '0 auto', textAlign: 'center' }}>
-      {/* Aqui você adicionaria a imagem de perfil */}
-      {/* <img src={profile.profileImageUrl} alt="Foto de Perfil" /> */}
-      
-      <h2>{profile.profileTitle || profile.username}</h2>
-      <p>{profile.bio}</p>
+    return (
+        <div className="profile-container">
+            {/* Renderiza a imagem apenas se a URL existir */}
+            {profile.profileImageUrl && (
+                <img
+                    src={profile.profileImageUrl}
+                    alt="Foto de Perfil"
+                    className="profile-image"
+                />
+            )}
 
-      <div>
-        {profile.links && profile.links.map(link => (
-          <a 
-            key={link.id} 
-            href={link.url} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={{
-              display: 'block',
-              backgroundColor: 'lightblue',
-              color: 'black',
-              padding: '15px',
-              margin: '15px 0',
-              textDecoration: 'none',
-              borderRadius: '5px',
-              fontWeight: 'bold'
-            }}
-          >
-            {link.title}
-          </a>
-        ))}
-      </div>
-    </div>
-  );
+            <h2 className="profile-title">{profile.profileTitle || profile.username}</h2>
+            <p className="profile-bio">{profile.bio}</p>
+
+            <div className="links-container">
+                {profile.links && profile.links.map(link => (
+                    <a
+                        key={link.id}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="profile-link"
+                    >
+                        {link.title}
+                    </a>
+                ))}
+            </div>
+        </div>
+    );
 };
 
 export default PublicProfilePage;
