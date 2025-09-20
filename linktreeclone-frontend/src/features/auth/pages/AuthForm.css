@@ -1,0 +1,71 @@
+.auth-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dbdbdb;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #3897f0;
+  color: white;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.auth-switch-link {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.auth-switch-link a {
+  color: #3897f0;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.error-message {
+  color: #ed4956; /* Vermelho para erros */
+  text-align: center;
+  margin-top: 16px;
+}
+
+.success-message {
+  color: #28a745; /* Verde para sucesso */
+  text-align: center;
+  margin-top: 16px;
+}
