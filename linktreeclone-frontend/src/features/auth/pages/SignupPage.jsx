@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signup } from '../api/authApi';
+import './AuthForm.css';
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -41,50 +42,33 @@ const SignupPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '50px auto' }}>
-      <h2>Criar Nova Conta</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '10px' }}>
+    <div className="auth-container">
+      <form onSubmit={handleSubmit} className="auth-form">
+        <h2>Criar Conta</h2>
+        <div className="form-group">
           <label>Nome de Usuário:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px' }}
-          />
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
         </div>
-        <div style={{ marginBottom: '10px' }}>
+        <div className="form-group">
           <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px' }}
-          />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
-        <div style={{ marginBottom: '15px' }}>
+        <div className="form-group">
           <label>Senha:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px' }}
-          />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-        <button type="submit" style={{ width: '100%', padding: '10px' }}>Cadastrar</button>
+        <button type="submit" className="auth-button">Cadastrar</button>
       </form>
 
-      {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
-      {success && <p style={{ color: 'green', textAlign: 'center' }}>{success}</p>}
+      {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">{success}</p>}
       
-      <p style={{ textAlign: 'center', marginTop: '20px' }}>
+      <p className="auth-switch-link">
         Já tem uma conta? <Link to="/login">Faça o login</Link>
       </p>
     </div>
   );
 };
+
 
 export default SignupPage;
