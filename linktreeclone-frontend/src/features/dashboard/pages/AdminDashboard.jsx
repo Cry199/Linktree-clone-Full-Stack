@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { getUserLinks, createLink, deleteLink, updateLink } from '../api/linksApi';
 import { getMe, updateMyProfile } from '../../auth/api/authApi';
+import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const { logout } = useAuth();
@@ -17,6 +18,7 @@ const AdminDashboard = () => {
   // Estados para gerenciamento de Perfil
   const [profileTitle, setProfileTitle] = useState('');
   const [bio, setBio] = useState('');
+  const [profileImageUrl, setProfileImageUrl] = useState('');
   const [profileMessage, setProfileMessage] = useState('');
 
   // Estados de UI
@@ -35,6 +37,7 @@ const AdminDashboard = () => {
         setLinks(linksResponse.data);
         setProfileTitle(meResponse.data.profileTitle || '');
         setBio(meResponse.data.bio || '');
+        setProfileImageUrl(meResponse.data.profileImageUrl || '');
 
       } catch (err) {
         setError('Não foi possível carregar os dados.');
@@ -64,7 +67,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     setProfileMessage('');
     try {
-      const profileData = { profileTitle, bio };
+      const profileData = { profileTitle, bio, profileImageUrl };
       await updateMyProfile(profileData);
       setProfileMessage('Perfil atualizado com sucesso!');
     } catch (err) {
@@ -109,93 +112,57 @@ const AdminDashboard = () => {
   if (loading) return <div>Carregando...</div>;
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div className="dashboard-container">
+      <header className="dashboard-header">
         <h1>Meu Painel</h1>
         <button onClick={handleLogout}>Sair</button>
       </header>
-      <hr />
-
+      
       {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      {/* --- EDIÇÃO DE PERFIL --- */}
-      <section>
+      
+      <section className="dashboard-section">
         <h2>Meu Perfil</h2>
-        <form onSubmit={handleProfileUpdate}>
-          <div>
-            <label>Título do Perfil:</label>
-            <input
-              type="text"
-              placeholder="Ex: Bem-vindo à minha página!"
-              value={profileTitle}
-              onChange={(e) => setProfileTitle(e.target.value)}
-              style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-            />
-          </div>
-          <div style={{ marginTop: '10px' }}>
-            <label>Bio:</label>
-            <textarea
-              placeholder="Fale um pouco sobre você..."
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              rows="3"
-              style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-            />
-          </div>
-          <button type="submit" style={{ marginTop: '10px' }}>Salvar Perfil</button>
+        <form onSubmit={handleProfileUpdate} className="dashboard-form">
+          <input type="text" placeholder="Título do Perfil" value={profileTitle} onChange={(e) => setProfileTitle(e.target.value)}/>
+          <textarea placeholder="Bio" value={bio} onChange={(e) => setBio(e.target.value)} rows="3"/>
+          <input type="url" placeholder="URL da Imagem de Perfil" value={profileImageUrl} onChange={(e) => setProfileImageUrl(e.target.value)}/>
+          <button type="submit">Salvar Perfil</button>
         </form>
         {profileMessage && <p style={{ color: profileMessage.includes('Erro') ? 'red' : 'green' }}>{profileMessage}</p>}
       </section>
 
-      <section>
-        <h2>Criar Novo Link</h2>
-        <form onSubmit={handleCreateLink}>
-          <input type="text" placeholder="Título" value={newLinkTitle} onChange={(e) => setNewLinkTitle(e.target.value)} />
-          <input type="url" placeholder="URL" value={newLinkUrl} onChange={(e) => setNewLinkUrl(e.target.value)} />
+      <section className="dashboard-section">
+        <h2>Meus Links</h2>
+        <form onSubmit={handleCreateLink} className="dashboard-form">
+          <input type="text" placeholder="Título do Link" value={newLinkTitle} onChange={(e) => setNewLinkTitle(e.target.value)} />
+          <input type="url" placeholder="URL do Link" value={newLinkUrl} onChange={(e) => setNewLinkUrl(e.target.value)} />
           <button type="submit">Adicionar Link</button>
         </form>
-      </section>
-      <hr />
-      <section>
-        <h2>Meus Links</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {links.length > 0 ? (
-          <ul>
-            {links.map((link) => (
-              <li key={link.id} style={{ marginBottom: '15px' }}>
-                {/* --- LÓGICA DE RENDERIZAÇÃO CONDICIONAL --- */}
-                {editingLink && editingLink.id === link.id ? (
-                  // Se o link atual for o que está sendo editado, mostra o formulário
-                  <form onSubmit={handleUpdateLink}>
-                    <input
-                      type="text"
-                      value={editingLink.title}
-                      onChange={(e) => setEditingLink({ ...editingLink, title: e.target.value })}
-                    />
-                    <input
-                      type="url"
-                      value={editingLink.url}
-                      onChange={(e) => setEditingLink({ ...editingLink, url: e.target.value })}
-                    />
+        
+        <ul className="link-list">
+          {links.map((link) => (
+            <li key={link.id}>
+              {editingLink && editingLink.id === link.id ? (
+                <form onSubmit={handleUpdateLink} className="edit-form">
+                  <input type="text" value={editingLink.title} onChange={(e) => setEditingLink({ ...editingLink, title: e.target.value })}/>
+                  <input type="url" value={editingLink.url} onChange={(e) => setEditingLink({ ...editingLink, url: e.target.value })}/>
+                  <div>
                     <button type="submit">Salvar</button>
                     <button type="button" onClick={() => setEditingLink(null)}>Cancelar</button>
-                  </form>
-                ) : (
-                  // Caso contrário, mostra o link normalmente com os botões
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span>{link.title}: {link.url}</span>
-                    <div>
-                      <button onClick={() => handleEditClick(link)}>Editar</button>
-                      <button onClick={() => handleDeleteLink(link.id)}>Apagar</button>
-                    </div>
                   </div>
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>Você ainda não tem links. Crie um acima!</p>
-        )}
+                </form>
+              ) : (
+                <div className="link-item">
+                  <span>{link.title}</span>
+                  <div className="link-item-actions">
+                    <button onClick={() => handleEditClick(link)}>Editar</button>
+                    <button onClick={() => handleDeleteLink(link.id)}>Apagar</button>
+                  </div>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
       </section>
     </div>
   );
