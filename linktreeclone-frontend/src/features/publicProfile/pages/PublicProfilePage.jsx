@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPublicProfile } from '../api/publicProfileApi';
+import LinkIcon from '../../../components/LinkIcon/LinkIcon';
 import './PublicProfilePage.css';
 
 const PublicProfilePage = () => {
@@ -58,7 +59,8 @@ const PublicProfilePage = () => {
                         rel="noopener noreferrer"
                         className="profile-link"
                     >
-                        {link.title}
+                        <LinkIcon url={link.url} />
+                        <span>{link.title}</span>
                     </a>
                 ))}
             </div>
