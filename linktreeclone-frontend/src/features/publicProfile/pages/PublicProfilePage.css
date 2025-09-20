@@ -1,0 +1,49 @@
+.profile-container {
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.profile-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.profile-bio {
+  font-size: 1rem;
+  margin-bottom: 32px;
+}
+
+.links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; 
+}
+
+.profile-link {
+  display: block;
+  background-color: #3897f0; 
+  color: white;
+  padding: 18px 20px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: transform 0.1s ease-in-out;
+}
+
+.profile-image {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%; 
+  object-fit: cover; 
+  margin-bottom: 16px;
+}
+
+
+.profile-link:hover {
+  transform: scale(1.02); /* Efeito de crescimento ao passar o mouse */
+  background-color: #358ae0;
+}
