@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import IconShowcase from '../../../components/IconShowcase/IconShowcase'; 
+import IconShowcase from '../../../components/IconShowcase/IconShowcase';
+import { checkApiStatus } from '../../../api/statusApi';
 import './HomePage.css';
 
 const HomePage = () => {
+    const [apiStatus, setApiStatus] = useState('checking'); // 'checking', 'ok', 'error'
+    const [statusMessage, setStatusMessage] = useState('Verificando status do servidor...');
+
+    useEffect(() => {
+        const getStatus = async () => {
+            try {
+                const response = await checkApiStatus();
+                if (response.data.api_status === 'ok' && response.data.database_status === 'ok') {
+                    setApiStatus('ok');
+                    setStatusMessage('Servidor online!');
+                } else {
+                    setApiStatus('error');
+                    setStatusMessage('Servidor com instabilidade. Tente novamente mais tarde.');
+                }
+            } catch (error) {
+                setApiStatus('error');
+                setStatusMessage('Servidor offline. Por favor, tente mais tarde.');
+                console.error("API Status Check Failed:", error);
+            }
+        };
+
+        getStatus();
+    }, []); 
+
+    const isApiReady = apiStatus === 'ok';
+
     return (
         <div className="home-container">
             <img src="/logo.png" alt="Logo do Site" className="home-logo" />
@@ -13,12 +40,24 @@ const HomePage = () => {
             </p>
 
             <div className="home-cta-container">
-                <Link to="/signup" className="home-cta-button primary">
+                <Link 
+                    to={isApiReady ? "/signup" : "#"} 
+                    className={`home-cta-button primary ${!isApiReady && 'disabled'}`}
+                    style={{ pointerEvents: !isApiReady ? 'none' : 'auto' }} // Impede o clique
+                >
                     Criar minha página
                 </Link>
-                <Link to="/login" className="home-cta-button secondary">
+                <Link 
+                    to={isApiReady ? "/login" : "#"} 
+                    className={`home-cta-button secondary ${!isApiReady && 'disabled'}`}
+                    style={{ pointerEvents: !isApiReady ? 'none' : 'auto' }}
+                >
                     Entrar
                 </Link>
+            </div>
+
+            <div className="api-status-indicator" style={{ color: isApiReady ? 'var(--success-color)' : 'var(--secondary-text-color)' }}>
+                {statusMessage}
             </div>
 
             <IconShowcase />
