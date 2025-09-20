@@ -8,12 +8,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/setupTests.js',
-  },
-  server: {
     deps: {
       inline: [
-        'webidl-conversions',
-        'whatwg-url',
+        /webidl-conversions/,
+        /whatwg-url/,
       ],
     },
   },
