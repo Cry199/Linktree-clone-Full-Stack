@@ -9,10 +9,11 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/setupTests.js',
     deps: {
-      inline: [
-        /webidl-conversions/,
-        /whatwg-url/,
-      ],
+      optimizer: {
+        web: {
+          include: ['@testing-library/jest-dom'],
+        },
+      },
     },
   },
 })
