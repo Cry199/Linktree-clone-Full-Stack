@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import IconShowcase from '../../../components/IconShowcase/IconShowcase'; 
 import './HomePage.css';
 
 const HomePage = () => {
@@ -10,7 +11,7 @@ const HomePage = () => {
             <p className="home-subtitle">
                 Crie uma página personalizada para agrupar todos os seus links importantes e compartilhe com um único link. Simples, rápido e grátis.
             </p>
-            
+
             <div className="home-cta-container">
                 <Link to="/signup" className="home-cta-button primary">
                     Criar minha página
@@ -19,6 +20,8 @@ const HomePage = () => {
                     Entrar
                 </Link>
             </div>
+
+            <IconShowcase />
 
             <footer className="home-footer">
                 <p>
