@@ -11,6 +11,8 @@ const PublicProfilePage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    const [copyText, setCopyText] = useState('Copiar Link');
+
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -27,6 +29,18 @@ const PublicProfilePage = () => {
 
         fetchProfile();
     }, [username]);
+
+    const handleCopyLink = () => {
+        const currentUrl = window.location.href; // Pega a URL atual
+        navigator.clipboard.writeText(currentUrl).then(() => {
+            setCopyText('Copiado!');
+            setTimeout(() => {
+                setCopyText('Copiar Link');
+            }, 2000);
+        }).catch(err => {
+            console.error('Falha ao copiar o link: ', err);
+        });
+    };
 
     if (loading) {
         return <div>Carregando perfil...</div>;
@@ -49,6 +63,10 @@ const PublicProfilePage = () => {
 
             <h2 className="profile-title">{profile.profileTitle || profile.username}</h2>
             <p className="profile-bio">{profile.bio}</p>
+
+            <button onClick={handleCopyLink} className="copy-link-button">
+                {copyText}
+            </button>
 
             <div className="links-container">
                 {profile.links && profile.links.map(link => (
