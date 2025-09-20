@@ -13,6 +13,8 @@ const PublicProfilePage = () => {
 
     const [copyText, setCopyText] = useState('Copiar Link');
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -29,6 +31,12 @@ const PublicProfilePage = () => {
 
         fetchProfile();
     }, [username]);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
+    if (loading) return <div>Carregando perfil...</div>;
+    if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
     const handleCopyLink = () => {
         const currentUrl = window.location.href; // Pega a URL atual
@@ -58,6 +66,7 @@ const PublicProfilePage = () => {
                     src={profile.profileImageUrl}
                     alt="Foto de Perfil"
                     className="profile-image"
+                    onClick={openModal} 
                 />
             )}
 
@@ -82,6 +91,19 @@ const PublicProfilePage = () => {
                     </a>
                 ))}
             </div>
+
+            {isModalOpen && (
+                <div className="image-modal-backdrop" onClick={closeModal}>
+                    <span className="image-modal-close">&times;</span>
+                    <img
+                        src={profile.profileImageUrl}
+                        alt="Foto de Perfil Ampliada"
+                        className="image-modal-full"
+                        onClick={(e) => e.stopPropagation()} // Impede que o clique na imagem feche o modal
+                    />
+                </div>
+            )}
+
         </div>
     );
 };
