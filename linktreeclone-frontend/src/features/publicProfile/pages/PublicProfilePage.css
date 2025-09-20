@@ -24,8 +24,8 @@
 
 .profile-link {
   display: block;
-  background-color: #3897f0; 
-  color: white;
+  background-color: var(--primary-color); 
+  color: var(--button-text-color);
   padding: 18px 20px;
   text-decoration: none;
   border-radius: 8px;
@@ -44,6 +44,6 @@
 
 
 .profile-link:hover {
-  transform: scale(1.02); /* Efeito de crescimento ao passar o mouse */
-  background-color: #358ae0;
+  transform: scale(1.02);
+  filter: brightness(1.1);
 }
