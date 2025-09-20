@@ -1,0 +1,45 @@
+name: Deploy Frontend to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'linktreeclone-frontend/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    defaults:
+      run:
+        working-directory: ./linktreeclone-frontend
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Build and Push Docker image
+        run: |-
+          # Constrói a imagem usando o Dockerfile do frontend
+          gcloud builds submit --tag southamerica-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/linktree-repo/linktree-frontend:latest .
+
+      - name: Deploy to Cloud Run
+        run: |-
+          # Faz o deploy do novo serviço para o frontend
+          gcloud run deploy linktree-frontend \
+            --image southamerica-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/linktree-repo/linktree-frontend:latest \
+            --platform managed \
+            --region southamerica-east1 \
+            --port 80 \
+            --allow-unauthenticated \
+            --quiet
