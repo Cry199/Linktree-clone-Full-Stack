@@ -23,8 +23,10 @@
 }
 
 .profile-link {
-  display: block;
-  background-color: var(--primary-color); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  background-color: var(--primary-color);
   color: var(--button-text-color);
   padding: 18px 20px;
   text-decoration: none;
