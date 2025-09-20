@@ -5,15 +5,17 @@ import './AuthForm.css';
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  
+
   // Estados para controlar os campos do formulário
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
   // Estados para feedback ao usuário
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,19 +27,19 @@ const SignupPage = () => {
       return;
     }
 
+    setIsLoading(true);
+
     try {
-      const userData = { username, email, password };
-      await signup(userData);
-      
-      setSuccess('Cadastro realizado com sucesso! Você será redirecionado para o login.');
-      
+      await signup({ username, email, password });
+      setSuccess('Cadastro realizado com sucesso! Redirecionando...');
+
       setTimeout(() => {
         navigate('/login');
       }, 2000);
 
     } catch (err) {
       setError('Erro ao realizar o cadastro. O nome de usuário ou e-mail pode já estar em uso.');
-      console.error(err);
+      setIsLoading(false);
     }
   };
 
@@ -57,12 +59,14 @@ const SignupPage = () => {
           <label>Senha:</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-        <button type="submit" className="auth-button">Cadastrar</button>
+        <button type="submit" className="auth-button" disabled={isLoading}>
+          {isLoading ? 'Cadastrando...' : 'Cadastrar'}
+        </button>
       </form>
 
       {error && <p className="error-message">{error}</p>}
       {success && <p className="success-message">{success}</p>}
-      
+
       <p className="auth-switch-link">
         Já tem uma conta? <Link to="/login">Faça o login</Link>
       </p>
