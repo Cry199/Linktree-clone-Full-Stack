@@ -9,10 +9,9 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/setupTests.js',
     deps: {
-      optimizer: {
-        web: {
-          include: ['@testing-library/jest-dom'],
-        },
+      web: {
+        transformAssets: false,
+        transformCss: false,
       },
     },
   },
