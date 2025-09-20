@@ -6,7 +6,7 @@ Este projeto é uma implementação completa de um clone do Linktree, oferecendo
 
 Você pode acessar as versões online do backend e frontend do Linktree Clone através dos seguintes links:
 
-*   **Backend (API)**: [https://linktree-clone-api-faw777jkuq-rj.a.run.app](https://linktree-clone-api-faw777jkuq-rj.a.run.app)
+*   **Backend (API)**: [https://linktree-clone-api-faw777jkuq-rj.a.run.app](https://linktree-clone-api-faw777jkuq-rj.a.run.app/swagger-ui/index.html)
 *   **Frontend (Interface do Usuário)**: [https://linktree-frontend-faw777jkuq-rj.a.run.app](https://linktree-frontend-faw777jkuq-rj.a.run.app)
 
 
