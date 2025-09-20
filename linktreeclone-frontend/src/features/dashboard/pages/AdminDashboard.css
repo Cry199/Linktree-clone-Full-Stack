@@ -102,3 +102,53 @@
   background-color: var(--background-color);
   border-color: var(--secondary-text-color);
 }
+
+.view-profile-link {
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: var(--surface-color);
+  color: var(--primary-text-color);
+  border: 1px solid var(--border-color);
+  text-decoration: none;
+  font-weight: bold;
+  margin-right: auto; 
+  margin-left: 20px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.view-profile-link:hover {
+  background-color: var(--background-color);
+}
+
+.edit-form input {
+  flex-grow: 1; /* Faz os inputs ocuparem o espaço disponível */
+  margin-right: 10px;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--background-color);
+  color: var(--primary-text-color);
+  font-size: 0.9rem;
+}
+
+
+.edit-form div {
+  display: flex;
+  gap: 8px; 
+}
+
+.edit-form button {
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  background-color: var(--surface-color);
+  color: var(--primary-text-color);
+}
+
+.edit-form button[type="submit"] {
+  background-color: var(--primary-color);
+  color: var(--button-text-color);
+  border-color: var(--primary-color);
+}
