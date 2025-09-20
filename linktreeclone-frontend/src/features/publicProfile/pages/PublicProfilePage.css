@@ -49,3 +49,20 @@
   transform: scale(1.02);
   filter: brightness(1.1);
 }
+
+.copy-link-button {
+  background-color: transparent;
+  color: var(--primary-text-color);
+  border: 2px solid var(--border-color);
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 32px;
+  transition: all 0.2s ease-in-out;
+}
+
+.copy-link-button:hover {
+  background-color: var(--surface-color);
+  border-color: var(--primary-color);
+}
