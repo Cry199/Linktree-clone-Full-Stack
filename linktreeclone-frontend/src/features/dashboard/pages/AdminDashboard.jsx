@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { getUserLinks, createLink, deleteLink, updateLink } from '../api/linksApi';
 import { getMe, updateMyProfile } from '../../auth/api/authApi';
+import LinkIcon from '../../../components/LinkIcon/LinkIcon';
+
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -20,6 +22,7 @@ const AdminDashboard = () => {
   const [bio, setBio] = useState('');
   const [profileImageUrl, setProfileImageUrl] = useState('');
   const [profileMessage, setProfileMessage] = useState('');
+  const [username, setUsername] = useState('');
 
   // Estados de UI
   const [loading, setLoading] = useState(true);
@@ -38,6 +41,7 @@ const AdminDashboard = () => {
         setProfileTitle(meResponse.data.profileTitle || '');
         setBio(meResponse.data.bio || '');
         setProfileImageUrl(meResponse.data.profileImageUrl || '');
+        setUsername(meResponse.data.username || '');
 
       } catch (err) {
         setError('Não foi possível carregar os dados.');
@@ -115,13 +119,20 @@ const AdminDashboard = () => {
     <div className="dashboard-container">
       <header className="dashboard-header">
         <h1>Meu Painel</h1>
+
+        {username && (
+          <Link to={`/${username}`} target="_blank" className="view-profile-link">
+            Ver Minha Página
+          </Link>
+        )}
+
         <button onClick={handleLogout}>Sair</button>
       </header>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <section className="dashboard-section">
-        <h2>Meu Perfil</h2>
+        <h2>Meu Perfil - {username}</h2>
         <form onSubmit={handleProfileUpdate} className="dashboard-form">
           <input type="text" placeholder="Título do Perfil" value={profileTitle} onChange={(e) => setProfileTitle(e.target.value)} />
           <textarea placeholder="Bio" value={bio} onChange={(e) => setBio(e.target.value)} rows="3" />
@@ -153,7 +164,10 @@ const AdminDashboard = () => {
                 </form>
               ) : (
                 <div className="link-item">
-                  <span>{link.title}</span>
+                  <span style={{ display: 'flex', alignItems: 'center' }}>
+                    <LinkIcon url={link.url} />
+                    {link.title}
+                  </span>
                   <div className="link-item-actions">
                     <button onClick={() => handleEditClick(link)}>Editar</button>
                     <button onClick={() => handleDeleteLink(link.id)}>Apagar</button>
