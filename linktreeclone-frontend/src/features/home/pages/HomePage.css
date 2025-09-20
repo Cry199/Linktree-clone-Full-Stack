@@ -59,6 +59,15 @@
   text-decoration: underline;
 }
 
+.icon-showcase {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center;
+  gap: 24px;
+  color: var(--secondary-text-color);
+}
+
 .primary {
     background-color: var(--primary-color);
     color: var(--button-text-color);
