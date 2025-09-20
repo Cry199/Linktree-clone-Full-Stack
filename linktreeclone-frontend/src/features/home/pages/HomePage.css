@@ -47,6 +47,18 @@
     margin-bottom: 24px;
 }
 
+.home-footer {
+  margin-top: 60px;
+  font-size: 0.9rem;
+  color: var(--secondary-text-color);
+}
+
+.home-footer a {
+  color: var(--secondary-text-color);
+  font-weight: 500;
+  text-decoration: underline;
+}
+
 .primary {
     background-color: var(--primary-color);
     color: var(--button-text-color);
