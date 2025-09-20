@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../../../context/AuthContext'
+import { useAuth } from '../../../context/AuthContext';
+import './AuthForm.css';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('Bento@Bento.com'); 
@@ -23,32 +24,23 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '50px auto' }}>
-      <h2>Página de Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <div className="auth-container">
+      <form onSubmit={handleSubmit} className="auth-form">
+        <h2>Login</h2>
+        <div className="form-group">
           <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
-        <div>
+        <div className="form-group">
           <label>Senha:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-        <button type="submit">Entrar</button>
+        <button type="submit" className="auth-button">Entrar</button>
       </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <p style={{ textAlign: 'center', marginTop: '20px' }}>
+      {error && <p className="error-message">{error}</p>}
+      
+      <p className="auth-switch-link">
         Não tem uma conta? <Link to="/signup">Cadastre-se</Link>
       </p>
     </div>
