@@ -117,15 +117,15 @@ const AdminDashboard = () => {
         <h1>Meu Painel</h1>
         <button onClick={handleLogout}>Sair</button>
       </header>
-      
+
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      
+
       <section className="dashboard-section">
         <h2>Meu Perfil</h2>
         <form onSubmit={handleProfileUpdate} className="dashboard-form">
-          <input type="text" placeholder="Título do Perfil" value={profileTitle} onChange={(e) => setProfileTitle(e.target.value)}/>
-          <textarea placeholder="Bio" value={bio} onChange={(e) => setBio(e.target.value)} rows="3"/>
-          <input type="url" placeholder="URL da Imagem de Perfil" value={profileImageUrl} onChange={(e) => setProfileImageUrl(e.target.value)}/>
+          <input type="text" placeholder="Título do Perfil" value={profileTitle} onChange={(e) => setProfileTitle(e.target.value)} />
+          <textarea placeholder="Bio" value={bio} onChange={(e) => setBio(e.target.value)} rows="3" />
+          <input type="url" placeholder="URL da Imagem de Perfil" value={profileImageUrl} onChange={(e) => setProfileImageUrl(e.target.value)} />
           <button type="submit">Salvar Perfil</button>
         </form>
         {profileMessage && <p style={{ color: profileMessage.includes('Erro') ? 'red' : 'green' }}>{profileMessage}</p>}
@@ -138,14 +138,14 @@ const AdminDashboard = () => {
           <input type="url" placeholder="URL do Link" value={newLinkUrl} onChange={(e) => setNewLinkUrl(e.target.value)} />
           <button type="submit">Adicionar Link</button>
         </form>
-        
+
         <ul className="link-list">
           {links.map((link) => (
             <li key={link.id}>
               {editingLink && editingLink.id === link.id ? (
                 <form onSubmit={handleUpdateLink} className="edit-form">
-                  <input type="text" value={editingLink.title} onChange={(e) => setEditingLink({ ...editingLink, title: e.target.value })}/>
-                  <input type="url" value={editingLink.url} onChange={(e) => setEditingLink({ ...editingLink, url: e.target.value })}/>
+                  <input type="text" value={editingLink.title} onChange={(e) => setEditingLink({ ...editingLink, title: e.target.value })} />
+                  <input type="url" value={editingLink.url} onChange={(e) => setEditingLink({ ...editingLink, url: e.target.value })} />
                   <div>
                     <button type="submit">Salvar</button>
                     <button type="button" onClick={() => setEditingLink(null)}>Cancelar</button>
