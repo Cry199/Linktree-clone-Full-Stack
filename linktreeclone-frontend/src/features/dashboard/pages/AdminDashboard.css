@@ -1,0 +1,94 @@
+.dashboard-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dbdbdb;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.dashboard-section {
+  margin-bottom: 32px;
+}
+
+.dashboard-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.dashboard-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-form input,
+.dashboard-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dbdbdb;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.dashboard-form button {
+  padding: 12px 20px;
+  border: none;
+  background-color: #3897f0;
+  color: white;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.link-list {
+  list-style: none;
+  padding: 0;
+}
+
+.link-item, .edit-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #dbdbdb;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.link-item-actions button {
+  margin-left: 8px;
+  background: none;
+  border: 1px solid #dbdbdb;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dashboard-header button {
+  padding: 8px 16px;
+  border: 1px solid #dbdbdb;
+  background-color: #fafafa;
+  color: #262626;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s;
+}
+
+.dashboard-header button:hover {
+  background-color: #f0f0f0;
+  border-color: #c7c7c7;
+}
