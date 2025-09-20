@@ -38,6 +38,9 @@ public class SecurityConfig
                                 "/auth/login",
                                 "/status"
                         ).permitAll()
+                        .requestMatchers("/swagger-ui.html").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/{username}").permitAll()
                         .anyRequest().authenticated()
                 )
