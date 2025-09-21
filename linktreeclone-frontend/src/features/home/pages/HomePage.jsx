@@ -76,6 +76,12 @@ const HomePage = () => {
                         GitHub
                     </a>
                 </p>
+                <p>
+                    Backend (API): {' '}
+                    <a href="https://linktree-clone-api-faw777jkuq-rj.a.run.app/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">
+                        Swagger UI
+                    </a>
+                </p>
             </footer>
         </div>
     );
