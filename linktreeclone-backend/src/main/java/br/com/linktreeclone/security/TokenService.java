@@ -1,6 +1,7 @@
 package br.com.linktreeclone.security;
 
 import br.com.linktreeclone.entity.User;
+import br.com.linktreeclone.exception.InvalidTokenException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -53,7 +54,7 @@ public class TokenService
                     .getSubject();
         }
         catch (Exception e) {
-            throw new RuntimeException("Token JWT expirado ou inválido");
+            throw new InvalidTokenException("Token JWT expirado ou inválido");
         }
     }
 }
