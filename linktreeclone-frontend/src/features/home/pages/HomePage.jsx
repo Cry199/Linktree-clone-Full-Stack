@@ -27,7 +27,7 @@ const HomePage = () => {
         };
 
         getStatus();
-    }, []); 
+    }, []);
 
     const isApiReady = apiStatus === 'ok';
 
@@ -40,15 +40,15 @@ const HomePage = () => {
             </p>
 
             <div className="home-cta-container">
-                <Link 
-                    to={isApiReady ? "/signup" : "#"} 
+                <Link
+                    to={isApiReady ? "/signup" : "#"}
                     className={`home-cta-button primary ${!isApiReady && 'disabled'}`}
                     style={{ pointerEvents: !isApiReady ? 'none' : 'auto' }} // Impede o clique
                 >
                     Criar minha página
                 </Link>
-                <Link 
-                    to={isApiReady ? "/login" : "#"} 
+                <Link
+                    to={isApiReady ? "/login" : "#"}
                     className={`home-cta-button secondary ${!isApiReady && 'disabled'}`}
                     style={{ pointerEvents: !isApiReady ? 'none' : 'auto' }}
                 >
@@ -74,6 +74,12 @@ const HomePage = () => {
                     Link do Repositório: {' '}
                     <a href="https://github.com/Cry199/Linktree-clone-Full-Stack" target="_blank" rel="noopener noreferrer">
                         GitHub
+                    </a>
+                </p>
+                <p>
+                    Backend (API): {' '}
+                    <a href="https://linktree-clone-api-faw777jkuq-rj.a.run.app/swagger-ui/index.html" target="_blank" rel="noopener noreferrer">
+                        Swagger UI
                     </a>
                 </p>
             </footer>
