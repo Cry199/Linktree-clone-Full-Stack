@@ -62,23 +62,18 @@ public class TokenService
                     .getSubject();
         }
         catch (ExpiredJwtException ex) {
-            logger.error("Token JWT expirou: {}", ex.getMessage());
             throw new InvalidTokenException("Sua sessão expirou. Por favor, faça login novamente.");
         }
         catch (SignatureException ex) {
-            logger.error("Assinatura do JWT é inválida: {}", ex.getMessage());
             throw new InvalidTokenException("Assinatura do token é inválida.");
         }
         catch (MalformedJwtException ex) {
-            logger.error("Token JWT malformado: {}", ex.getMessage());
             throw new InvalidTokenException("Token malformado.");
         }
         catch (UnsupportedJwtException ex) {
-            logger.error("Token JWT não é suportado: {}", ex.getMessage());
             throw new InvalidTokenException("Este tipo de token não é suportado.");
         }
         catch (IllegalArgumentException ex) {
-            logger.error("O conteúdo do JWT está vazio: {}", ex.getMessage());
             throw new InvalidTokenException("Token inválido ou vazio.");
         }
     }
