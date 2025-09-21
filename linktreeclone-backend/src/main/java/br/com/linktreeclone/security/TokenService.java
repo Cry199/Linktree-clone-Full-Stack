@@ -8,6 +8,12 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -23,6 +29,8 @@ public class TokenService
     private Long jwtExpiration;
 
     private SecretKey key;
+
+    private static final Logger logger = LoggerFactory.getLogger(TokenService.class);
 
     @PostConstruct
     public void init() {
@@ -53,8 +61,25 @@ public class TokenService
                     .getBody()
                     .getSubject();
         }
-        catch (Exception e) {
-            throw new InvalidTokenException("Token JWT expirado ou inválido");
+        catch (ExpiredJwtException ex) {
+            logger.error("Token JWT expirou: {}", ex.getMessage());
+            throw new InvalidTokenException("Sua sessão expirou. Por favor, faça login novamente.");
+        }
+        catch (SignatureException ex) {
+            logger.error("Assinatura do JWT é inválida: {}", ex.getMessage());
+            throw new InvalidTokenException("Assinatura do token é inválida.");
+        }
+        catch (MalformedJwtException ex) {
+            logger.error("Token JWT malformado: {}", ex.getMessage());
+            throw new InvalidTokenException("Token malformado.");
+        }
+        catch (UnsupportedJwtException ex) {
+            logger.error("Token JWT não é suportado: {}", ex.getMessage());
+            throw new InvalidTokenException("Este tipo de token não é suportado.");
+        }
+        catch (IllegalArgumentException ex) {
+            logger.error("O conteúdo do JWT está vazio: {}", ex.getMessage());
+            throw new InvalidTokenException("Token inválido ou vazio.");
         }
     }
 }
