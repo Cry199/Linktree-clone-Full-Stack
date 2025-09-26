@@ -40,8 +40,7 @@ jobs:
             --region southamerica-east1 \
             --allow-unauthenticated \
             --add-cloudsql-instances=gen-lang-client-0887157069:southamerica-east1:multi-project-dev-db \
-            --set-env-vars="SPRING_DATASOURCE_URL=jdbc:postgresql://google/linktree_db?cloudSqlInstance=gen-lang-client-0887157069:southamerica-east1:multi-project-dev-db&socketFactory=com.google.cloud.sql.postgres.SocketFactory" \
             --set-env-vars="SPRING_DATASOURCE_USERNAME=postgres" \
             --set-env-vars="JWT_EXPIRATION=86400000" \
-            --update-secrets=SPRING_DATASOURCE_PASSWORD=linktree-db-password:latest,JWT_SECRET=jwt-secret:latest \
+            --update-secrets=SPRING_DATASOURCE_PASSWORD=linktree-db-password:latest,JWT_SECRET=jwt-secret:latest,IP_POSTGRES=IP_POSTGRES:latest \
             --quiet
