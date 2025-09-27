@@ -10,4 +10,5 @@ public class LinktreecloneApplication {
 		SpringApplication.run(LinktreecloneApplication.class, args);
 	}
 
+	
 }
