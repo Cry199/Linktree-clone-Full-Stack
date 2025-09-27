@@ -39,8 +39,8 @@ jobs:
             --platform managed \
             --region southamerica-east1 \
             --allow-unauthenticated \
-            --add-cloudsql-instances=gen-lang-client-0887157069:southamerica-east1:multi-project-dev-db \
+            --set-env-vars="SPRING_DATASOURCE_URL=jdbc:postgresql://${{ secrets.IP_POSTGRES }}:5432/linktree_db?sslmode=require" \
             --set-env-vars="SPRING_DATASOURCE_USERNAME=postgres" \
             --set-env-vars="JWT_EXPIRATION=86400000" \
-            --update-secrets=SPRING_DATASOURCE_PASSWORD=linktree-db-password:latest,JWT_SECRET=jwt-secret:latest,IP_POSTGRES=IP_POSTGRES:latest \
+            --update-secrets=SPRING_DATASOURCE_PASSWORD=linktree-db-password:latest,JWT_SECRET=jwt-secret:latest \
             --quiet
