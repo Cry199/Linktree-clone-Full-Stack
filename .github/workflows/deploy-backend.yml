@@ -39,6 +39,6 @@ jobs:
             --platform managed \
             --region southamerica-east1 \
             --allow-unauthenticated \
-            --set-env-vars="SPRING_DATASOURCE_URL=jdbc:postgresql://${{ secrets.IP_POSTGRES }}:5432/personal_finances_db?sslmode=require,SPRING_DATASOURCE_USERNAME=postgres,JWT_EXPIRATION=86400000" \
+            --set-env-vars="SPRING_DATASOURCE_URL=jdbc:postgresql://${{ secrets.IP_POSTGRES }}:5432/linktree_db?sslmode=require,SPRING_DATASOURCE_USERNAME=postgres,JWT_EXPIRATION=86400000" \
             --update-secrets=SPRING_DATASOURCE_PASSWORD=linktree-db-password:latest,JWT_SECRET=jwt-secret:latest \
             --quiet
