@@ -9,6 +9,4 @@ public class LinktreecloneApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LinktreecloneApplication.class, args);
 	}
-
-	
 }
